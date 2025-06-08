@@ -12,7 +12,7 @@
           </div>
         </div>
         <div class="d-flex align-items-center mb-3">
-          <i class="bi bi-geo-alt-fill fs-4 me-2 text-warning"></i>
+          <i class="bi bi-geo-alt-fill fs-4 me-2 text-warning"  @click="openMap" title="點擊可在地圖中查看位置"></i>
           <div>台中市潭子區中山路二段135號3樓</div>
         </div>
         <div class="d-flex align-items-center mb-3">
@@ -83,6 +83,11 @@
   
   <script setup>
   // 暫無邏輯
+    function openMap() {
+      const address = encodeURIComponent('台中市潭子区中山路二段135号')
+      const url = `https://www.google.com/maps?q=${address}`
+      window.open(url, '_blank')
+    }
   </script>
   
   <style scoped>
