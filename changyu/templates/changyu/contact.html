@@ -1,0 +1,116 @@
+{% extends 'changyu/base.html' %}
+
+{% block title %}聯絡我們{% endblock %}
+
+{% block content %}
+<div class="main-wrapper d-flex flex-column min-vh-90 py-4 px-3">
+  <div class="container">
+    <div class="row gy-4">
+      <!-- 聯絡資訊 -->
+      <div class="col-12 col-md-6">
+        <div class="contact-info border-top pt-3 position-relative text-center text-md-start">
+          <!-- 標題，放左上角 -->
+          <h5 class="position-absolute top-0 start-0 mt-0 pt-0" style="font-weight: 700; font-size: 1.25rem;">
+            ​與我們聯繫
+          </h5>
+      
+          <div class="d-flex flex-column gap-3 mt-4">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-clock-fill fs-4 me-2 text-warning"></i>
+              <div>
+                <div>週一至週五</div>
+                <div>08:30 AM ~ 18:00 PM</div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center">
+                {% with address='台中市潭子區中山路二段135號' %}
+                <i class="bi bi-geo-alt-fill fs-4 me-2 text-warning" title="點擊可在地圖中查看位置"
+                   onclick="window.open('https://www.google.com/maps?q={{ address|urlencode }}', '_blank')">
+                </i>
+                {% endwith %}
+              <div>台中市潭子區中山路二段135號3樓</div>
+            </div>
+            <div class="d-flex align-items-center">
+              <i class="bi bi-telephone-fill fs-4 me-2 text-warning"></i>
+              <div>04-22388166</div>
+            </div>
+            <div class="d-flex align-items-center">
+              <i class="bi bi-phone-fill fs-4 me-2 text-warning"></i>
+              <div>0930-215656</div>
+            </div>
+            <div class="d-flex align-items-center">
+              <i class="bi bi-printer-fill fs-4 me-2 text-warning"></i>
+              <div>04-22325377</div>
+            </div>
+            <div class="d-flex align-items-center">
+              <i class="bi bi-envelope-fill fs-4 me-2 text-warning"></i>
+              <div>cpck@ms22.hinet.net</div>
+            </div>
+      
+            <!-- 新增聯絡人 -->
+            <div class="d-flex align-items-center">
+              <i class="bi bi-person-fill fs-4 me-2 text-warning"></i>
+              <div>陳小姐</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+      <!-- 聯絡表單 -->
+      <div class="col-12 col-md-6">
+        <form class="bg-light p-4 rounded shadow-sm" method="post">
+          {% csrf_token %}
+          <h2 class="text-center mb-4">聯絡表單</h2>
+
+          <div class="mb-3">
+            <label class="form-label">* 諮詢分類</label>
+            <select class="form-select" name="category" required>
+              <option value="">請選擇</option>
+              <option value="general">一般諮詢</option>
+              <option value="quote">報價詢問</option>
+              <option value="other">其他</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">* 姓名與性別</label>
+            <div class="row g-2">
+              <div class="col-8">
+                <input type="text" name="name" class="form-control" required placeholder="請輸入姓名" />
+              </div>
+              <div class="col-4 d-flex align-items-center justify-content-around">
+                <label class="form-check-label">
+                  <input type="radio" name="gender" value="mr" class="form-check-input me-1" /> 先生
+                </label>
+                <label class="form-check-label">
+                  <input type="radio" name="gender" value="ms" class="form-check-input me-1" /> 小姐
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">手機</label>
+            <input type="tel" name="phone" class="form-control" placeholder="09xx-xxx-xxx" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">* 信箱</label>
+            <input type="email" name="email" class="form-control" required placeholder="example@mail.com" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">* 諮詢內容</label>
+            <textarea name="message" class="form-control" rows="4" required></textarea>
+          </div>
+
+          <div class="text-end">
+            <button type="submit" class="btn btn-warning">送出</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'changyu/base.html' %}
+{% load static %}
+
+{% block title %}服務項目{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <!-- 服務介紹 -->
+  <section class="row align-items-center mb-5">
+    <div class="col-md-6">
+      <img src="{% static 'changyu/images/123.jpg' %}" alt="工程造價估算" class="img-fluid rounded shadow-sm" />
+    </div>
+    <div class="col-md-6">
+      <h2 class="mb-3">什麼是工程造價估算？</h2>
+      <p>工程造價估算是對建設項目進行成本分析的過程，涵蓋材料費用、人工、設備租賃、管理費用等多項要素，為您提供合理的預算範圍，避免工程超支與延誤。</p>
+      <p>我們運用先進的造價模型與豐富經驗，協助您在不同階段做出明智決策，保障專案效益最大化。</p>
+    </div>
+  </section>
+
+
+  <!-- 頁面主標題 -->
+  <header class="mb-5 text-center">
+    <h1 class="display-4 fw-bold">我們提供專業的工程造價估算服務</h1>
+    <p class="lead text-muted">提供準確工程造價評估，協助業主與建商掌控預算，有效降低施工成本風險，助您順利完成每一個工程專案</p>
+  </header>
+
+  <!-- 服務特色 -->
+  <section class="mb-5">
+    <h2 class="mb-4 text-center">服務特色</h2>
+    <div class="row text-center g-4">
+      <div class="col-12 col-md-4">
+        <div class="p-4 border rounded shadow-sm h-100 bg-light">
+          <i class="bi bi-calculator fs-1 text-primary mb-3"></i>
+          <h4>精準計算</h4>
+          <p>採用科學方法與最新市場價格，確保每項成本合理且透明。</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="p-4 border rounded shadow-sm h-100 bg-light">
+          <i class="bi bi-clock-history fs-1 text-success mb-3"></i>
+          <h4>快速回覆</h4>
+          <p>專業團隊高效作業，確保估算報告及時交付，助您快速決策。</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="p-4 border rounded shadow-sm h-100 bg-light">
+          <i class="bi bi-people fs-1 text-warning mb-3"></i>
+          <h4>客製化方案</h4>
+          <p>根據您的專案需求量身打造估算方案，靈活應對各種複雜挑戰。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 流程說明 -->
+  <section class="mb-5">
+    <h2 class="mb-4 text-center">我們的估算流程</h2>
+    <div class="row gx-4 gy-3 justify-content-center">
+      <div class="col-12 col-md-3">
+        <div class="border rounded p-3 text-center h-100 shadow-sm bg-light">
+          <i class="bi bi-clipboard-check fs-2 text-info mb-2"></i>
+          <h5>需求評估</h5>
+          <p>與您溝通，了解專案範圍及需求細節。</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-3">
+        <div class="border rounded p-3 text-center h-100 shadow-sm bg-light">
+          <i class="bi bi-file-earmark-text fs-2 text-primary mb-2"></i>
+          <h5>資料蒐集</h5>
+          <p>收集設計圖面、規格及材料報價等相關資料。</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-3">
+        <div class="border rounded p-3 text-center h-100 shadow-sm bg-light">
+          <i class="bi bi-calculator fs-2 text-success mb-2"></i>
+          <h5>成本計算</h5>
+          <p>精確分析各項造價組成，編制估算報告。</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-3">
+        <div class="border rounded p-3 text-center h-100 shadow-sm bg-light">
+          <i class="bi bi-chat-text fs-2 text-warning mb-2"></i>
+          <h5>結果回報</h5>
+          <p>提供清楚報告，並與您討論與修正方案。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA 連絡我們 -->
+  <section class="text-center">
+    <h2 class="mb-3">準備好了解您的工程造價了嗎？</h2>
+    <p class="mb-4">立即聯絡我們，獲取專屬的估算方案與報價！</p>
+    <a href="{% url 'contact' %}" class="btn btn-lg btn-warning px-5">聯絡我們</a>
+  </section>
+</div>
+{% endblock %}

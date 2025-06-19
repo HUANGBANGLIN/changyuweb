@@ -1,0 +1,23 @@
+# 忽略 Python 編譯與快取
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+
+# 忽略 Django 遷移紀錄
+**/migrations/
+!*/migrations/__init__.py  # 保留 __init__.py
+
+# 忽略環境設定
+.env
+*.env
+*.local
+
+# 忽略虛擬環境（視你使用哪個資料夾命名）
+venv/
+env/
+
+# macOS 和 VSCode 額外忽略
+.DS_Store
+.vscode/
+.idea/

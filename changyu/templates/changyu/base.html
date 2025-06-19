@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}昌鈺興業{% endblock %}</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; /* 整體不滾動，只滾中間 */
+    }
+
+    .main-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .main-content {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 1rem;
+      background-color: rgba(224, 225, 226, 0.925);
+      
+    }
+
+    .navbar-brand {
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+
+    .nav-link {
+      font-weight: 500;
+    }
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <div class="main-wrapper">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark px-3">
+      <a class="navbar-brand" href="{% url 'index' %}">LOGO 昌鈺興業</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">首頁</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'service' %}active{% endif %}" href="{% url 'service' %}">服務項目</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'projectshare' %}active{% endif %}" href="{% url 'projectshare' %}">業務實績</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'csr' %}active{% endif %}" href="{% url 'csr' %}">企業社會責任</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">聯絡我們</a>
+          </li>
+        </ul>
+        
+      </div>
+    </nav>
+
+    <!-- 中間滾動內容區 -->
+    <div class="main-content">
+      {% block content %}
+      <!-- 子模板內容放這裡 -->
+      {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+      © 2025 昌鈺興業股份有限公司. All rights reserved.
+    </footer>
+
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
