@@ -13,7 +13,7 @@
           <h5 class="position-absolute top-0 start-0 mt-0 pt-0" style="font-weight: 700; font-size: 1.25rem;">
             ​與我們聯繫
           </h5>
-      
+
           <div class="d-flex flex-column gap-3 mt-4">
             <div class="d-flex align-items-center">
               <i class="bi bi-clock-fill fs-4 me-2 text-warning"></i>
@@ -23,11 +23,11 @@
               </div>
             </div>
             <div class="d-flex align-items-center">
-                {% with address='台中市潭子區中山路二段135號' %}
-                <i class="bi bi-geo-alt-fill fs-4 me-2 text-warning" title="點擊可在地圖中查看位置"
-                   onclick="window.open('https://www.google.com/maps?q={{ address|urlencode }}', '_blank')">
-                </i>
-                {% endwith %}
+              {% with address='台中市潭子區中山路二段135號' %}
+              <i class="bi bi-geo-alt-fill fs-4 me-2 text-warning" title="點擊可在地圖中查看位置"
+                 onclick="window.open('https://www.google.com/maps?q={{ address|urlencode }}', '_blank')">
+              </i>
+              {% endwith %}
               <div>台中市潭子區中山路二段135號3樓</div>
             </div>
             <div class="d-flex align-items-center">
@@ -46,7 +46,7 @@
               <i class="bi bi-envelope-fill fs-4 me-2 text-warning"></i>
               <div>cpck@ms22.hinet.net</div>
             </div>
-      
+
             <!-- 新增聯絡人 -->
             <div class="d-flex align-items-center">
               <i class="bi bi-person-fill fs-4 me-2 text-warning"></i>
@@ -55,11 +55,10 @@
           </div>
         </div>
       </div>
-      
 
       <!-- 聯絡表單 -->
       <div class="col-12 col-md-6">
-        <form class="bg-light p-4 rounded shadow-sm" method="post">
+        <form id="contactForm" class="bg-light p-4 rounded shadow-sm" method="post">
           {% csrf_token %}
           <h2 class="text-center mb-4">聯絡表單</h2>
 
@@ -73,19 +72,23 @@
             </select>
           </div>
 
+          <!-- 姓名 -->
           <div class="mb-3">
-            <label class="form-label">* 姓名與性別</label>
-            <div class="row g-2">
-              <div class="col-8">
-                <input type="text" name="name" class="form-control" required placeholder="請輸入姓名" />
+            <label for="name" class="form-label">* 姓名</label>
+            <input type="text" id="name" name="name" class="form-control" required placeholder="請輸入姓名" />
+          </div>
+
+          <!-- 性別 -->
+          <div class="mb-3">
+            <label class="form-label">* 性別</label>
+            <div class="d-flex gap-4">
+              <div class="form-check">
+                <input type="radio" id="gender-mr" name="gender" value="mr" class="form-check-input" required />
+                <label for="gender-mr" class="form-check-label">先生</label>
               </div>
-              <div class="col-4 d-flex align-items-center justify-content-around">
-                <label class="form-check-label">
-                  <input type="radio" name="gender" value="mr" class="form-check-input me-1" /> 先生
-                </label>
-                <label class="form-check-label">
-                  <input type="radio" name="gender" value="ms" class="form-check-input me-1" /> 小姐
-                </label>
+              <div class="form-check">
+                <input type="radio" id="gender-ms" name="gender" value="ms" class="form-check-input" />
+                <label for="gender-ms" class="form-check-label">小姐</label>
               </div>
             </div>
           </div>
@@ -113,4 +116,66 @@
     </div>
   </div>
 </div>
+
+<!-- 自定义弹窗 -->
+<div id="customAlert" style="display:none; position:fixed; top:50%; left:50%; 
+  transform: translate(-50%, -50%); background:#fff; border-radius:8px; 
+  padding:20px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index:9999; max-width:300px; text-align:center;">
+  <p id="alertMessage" style="margin-bottom: 15px;"></p>
+  <button id="alertCloseBtn" style="padding:6px 12px; border:none; background:#007bff; 
+    color:#fff; border-radius:4px; cursor:pointer;">關閉</button>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('contactForm');
+  const alertBox = document.getElementById('customAlert');
+  const alertMessage = document.getElementById('alertMessage');
+  const alertCloseBtn = document.getElementById('alertCloseBtn');
+
+  // 关闭弹窗
+  alertCloseBtn.addEventListener('click', () => {
+    alertBox.style.display = 'none';
+  });
+
+  // 显示自定义弹窗函数
+  function showCustomAlert(message) {
+    alertMessage.textContent = message;
+    alertBox.style.display = 'block';
+  }
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const formData = new FormData(form);
+
+    fetch("{% url 'contact_submit' %}", {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': csrfToken,
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        showCustomAlert(data.message);
+        form.reset();
+      } else {
+        showCustomAlert(data.message || '提交失敗，請稍後再試。');
+      }
+    })
+    .catch(error => {
+      showCustomAlert('提交出錯，請稍後再試。');
+      console.error(error);
+    });
+  });
+});
+
+</script>
 {% endblock %}
