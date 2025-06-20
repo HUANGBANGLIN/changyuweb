@@ -13,9 +13,9 @@ def projectshare(request):
     # 業務實績
     return render(request, 'changyu/projectshare.html')
 
-def csr(request):
+def charity(request):
     # 企業社會責任
-    return render(request, 'changyu/csr.html')
+    return render(request, 'changyu/charity.html')
 
 def contact(request):
     # 聯絡我們

@@ -1,0 +1,210 @@
+{% extends "changyu/base.html" %}
+{% block title %}慈善活動 | 昌鈺興業{% endblock %}
+
+{% block extra_head %}
+  <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <style>
+    .swiper-container-fixed {
+      height: 300px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .swiper-slide {
+      width: 100% !important;
+      height: 100%;
+      display: flex;
+    }
+    .swiper-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+{% endblock %}
+{% block extra_css %}
+  <style>
+    /* 图片轮播保持不变 */
+    .swiper-container-fixed {
+      height: 300px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .swiper-slide {
+      display: flex;
+      width: 100% !important;
+      height: 100%;
+    }
+    .swiper-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    /* 滚动样式区块 */
+    .overflow-scroll-area {
+      max-height: 5em; /* 约两行，或你想要的行数高度 */
+      overflow-y: auto;
+      font-size: 0.95rem;
+      line-height: 1.2rem;
+    }
+    
+    /* 可选美化滚动条 */
+    .overflow-scroll-area::-webkit-scrollbar {
+      width: 6px;
+    }
+    .overflow-scroll-area::-webkit-scrollbar-thumb {
+      background-color: rgba(0,0,0,0.15);
+      border-radius: 3px;
+    }
+  </style>
+    
+{% endblock %}
+{% block content %}
+<div id="app" class="container-fluid py-4">
+  <div class="text-center mb-5">
+    <h1 class="h3 fw-bold mb-3">慈善活動</h1>
+    <p class="mb-3 text-secondary">
+      我們持續參與社會公益活動，以下為近期活動紀錄：
+    </p>
+    <p class="mb-4 text-secondary">
+      如果您對我們的慈善活動感興趣，可以透過聯絡頁面與我們聯絡。
+    </p>
+    <a href="/contact" class="btn btn-outline-primary">
+      聯絡我們
+    </a>
+  </div>
+  
+
+  <template v-if="totalCount === 0">
+    <p class="text-center text-muted">目前沒有資料</p>
+  </template>
+
+  <div v-else class="row g-4">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3" v-for="activity in activities" :key="activity.id">
+      <div class="card h-100 shadow-sm">
+        
+        <!-- Swiper 图轮播 -->
+        <div class="swiper swiper-container-fixed">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide" v-for="(img, i) in activity.images" :key="i">
+              <img :src="img.image" class="card-img-top swiper-image" />
+            </div>
+          </div>
+        </div>
+  
+        <!-- 活动标题与描述 -->
+        <div class="card-body d-flex flex-column" style="height: 160px;">
+          <h5 class="card-title overflow-scroll-area mb-2"></h5>
+            [[ activity.title || '未命名標題' ]]
+          </h5>
+          <p class="card-text text-muted overflow-scroll-area mb-0">
+            [[ activity.description || '暫無內容' ]] 活动描述，这是爱心便当，每个周六都会在大智公园发放，持续至今活动描述，这是爱心便当，每个周六都会在大智公园发放，持续至今活动描述，这是爱心便当，每个周六都会在大智公园发放，持续至今活动描述，这是爱心便当，每个周六都会在大智公园发放，持续至今活动描述，这是爱心便当，每个周六都会在大智公园发放，持续至今活动描述，这是爱心便当，每个周六都会在大智公园发放，持续至今活动描述，这是爱心便当，每个周六都会在大智公园发放，持续至今活动描述，这是爱心便当，每个周六都会在大智公园发放，持续至今活动描述，这是爱心便当，每个周六都会在大智公园发放，持续至今
+          </p>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+
+  <div v-if="hasMore" class="text-center mt-4">
+    <button @click="loadMore" class="btn btn-primary">載入更多</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const { createApp, onMounted, ref, onBeforeUnmount, nextTick } = Vue
+
+const app = createApp({
+  setup() {
+    const pageSize = 8
+    const totalCount = ref(20)
+    const allData = []
+    const activities = ref([])
+    const page = ref(1)
+    const hasMore = ref(true)
+    const isLoading = ref(false)
+    const swiperInstances = new Map()
+
+    for (let i = 1; i <= 20; i++) {
+      allData.push({
+        id: i,
+        title: `慈善活動標題 ${i}`,
+        description: `這是第 ${i} 個慈善活動的簡短介紹。`,
+        images: [
+          { image: `https://picsum.photos/seed/${i}a/400/200` },
+          { image: `https://picsum.photos/seed/${i}b/400/200` },
+          { image: `https://picsum.photos/seed/${i}c/400/200` }
+        ]
+      })
+    }
+
+    const loadMore = async () => {
+      if (isLoading.value || !hasMore.value) return
+      isLoading.value = true
+
+      const start = (page.value - 1) * pageSize
+      const end = page.value * pageSize
+      const nextItems = allData.slice(start, end)
+
+      if (nextItems.length > 0) {
+        activities.value.push(...nextItems)
+        page.value++
+
+        await nextTick()
+        document.querySelectorAll('.swiper').forEach(el => {
+          if (!swiperInstances.has(el)) {
+            swiperInstances.set(el, new Swiper(el, {
+              loop: true,
+              slidesPerView: 1,
+              spaceBetween: 0,
+              autoplay: {
+                delay: 3000,
+                disableOnInteraction: false
+              }
+            }))
+          }
+        })
+
+        hasMore.value = activities.value.length < totalCount.value
+      } else {
+        hasMore.value = false
+      }
+
+      isLoading.value = false
+    }
+
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+      const windowHeight = window.innerHeight
+      const fullHeight = document.documentElement.scrollHeight
+      if (fullHeight - (scrollTop + windowHeight) < 300) {
+        loadMore()
+      }
+    }
+
+    onMounted(() => {
+      if (totalCount.value > 0) {
+        loadMore()
+        window.addEventListener('scroll', handleScroll)
+      }
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('scroll', handleScroll)
+    })
+
+    return { activities, hasMore, loadMore, totalCount }
+  }
+})
+
+// ✅ 修复模板语法冲突
+app.config.compilerOptions.delimiters = ['[[', ']]']
+app.mount('#app')
+</script>
+{% endblock %}

@@ -1,0 +1,12 @@
+Django==5.0.9
+djangorestframework==3.16.0
+djangorestframework_simplejwt==5.5.0
+mssql-django==1.5
+pyodbc==5.1.0          # 或改成 pymssql==2.3.1，視你用哪個驅動
+pythonnet==3.0.5       # 若你有用 .NET DLL
+pillow==10.4.0         # 若你有用 ImageField
+openpyxl==3.1.5        # 若你有匯出/匯入 Excel
+asgiref==3.8.1
+sqlparse==0.5.1
+pytz==2024.1
+tzdata==2024.1
